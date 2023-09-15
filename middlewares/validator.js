@@ -20,7 +20,7 @@ module.exports = {
             .withMessage("Username is required")
             .isLength({ min: 3 })
             .withMessage("UserName contain at least 3 characters"),
-        check("mobile")
+        check("phone")
             .not()
             .isEmpty()
             .withMessage("Mobile is required")
@@ -28,6 +28,23 @@ module.exports = {
             .withMessage("Enter a valid mobile number")
             .matches(/^[0-9]+$/)
             .withMessage("Mobile should only contain numbers"),
+        check("password")
+            .not()
+            .isEmpty()
+            .withMessage("Password is required")
+            .custom((value) => !/\s/.test(value))
+            .withMessage("No space are allowed in the password"),
+    ],
+
+    loginValidator: [
+        check("email")
+            .not()
+            .isEmpty()
+            .withMessage("Email is required")
+            .isEmail()
+            .withMessage("Please enter a valid email")
+            .custom((value) => !/\s/.test(value))
+            .withMessage("No space are allowed in the password"),
         check("password")
             .not()
             .isEmpty()

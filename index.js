@@ -6,6 +6,14 @@ const mongoose = require("./config/mongo");
 const port = process.env.PORT;
 const userRoutes = require("./routes/user_routes");
 
+app.use(
+    cors({
+        origin: [process.env.FRONT_END_URL],
+        methods: ["GET","POST","DELETE"],
+        credentials: true
+    })
+);
+
 app.use(express.json());
 
 // routes
