@@ -19,7 +19,9 @@ module.exports = {
             .isEmpty()
             .withMessage("Username is required")
             .isLength({ min: 3 })
-            .withMessage("UserName contain at least 3 characters"),
+            .withMessage("UserName contain at least 3 characters")
+            .custom((value) => !/\s/.test(value))
+            .withMessage("No space are allowed in the password"),
         check("phone")
             .not()
             .isEmpty()
@@ -51,5 +53,16 @@ module.exports = {
             .withMessage("Password is required")
             .custom((value) => !/\s/.test(value))
             .withMessage("No space are allowed in the password"),
+    ],
+
+    addFriendValidato: [
+        check("to")
+            .not()
+            .isEmpty()
+            .withMessage("Please enter a valid user name")
+            .custom((value) => !/\s/.test(value))
+            .withMessage("Please enter a valid user name")
+            .isLength({ min: 3 })
+            .withMessage("serName contain at least 3 characters"),
     ],
 };

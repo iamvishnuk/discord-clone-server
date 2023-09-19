@@ -16,12 +16,20 @@ module.exports = {
 
             const { email, displayName, userName, phone, password } = req.body;
 
-            const user = await USERS.findOne({ email }).exec();
+            let user = await USERS.findOne({ email }).exec();
 
             if (user) {
                 return res
                     .status(409)
                     .json({ message: "Email already exists" });
+            }
+
+            user = await USERS.findOne({ userName }).exec();
+
+            if (user) {
+                return res
+                    .status(409)
+                    .json({ message: "User Name already taken" });
             }
 
             const bcryptHashRounds = 10;
@@ -91,6 +99,24 @@ module.exports = {
             res.status(500).json({
                 message: "Internal server error",
                 error: error.message,
+            });
+        }
+    },
+
+    isAuthUser: async (req, res) => {
+        try {
+            const user = await USERS.findOne({ _id: req.userId });
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ message: "Invalid user", auth: false });
+            } else {
+                return res.status(200).json({ auth: true });
+            }
+        } catch (error) {
+            res.status(500).json({
+                error: error.message,
+                message: "Internal server error",
             });
         }
     },

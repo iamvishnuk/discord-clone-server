@@ -12,6 +12,7 @@ const userModel = new mongoose.Schema({
     userName: {
         type: String,
         require: true,
+        unique: true,
     },
     phone: {
         type: Number,
@@ -24,6 +25,16 @@ const userModel = new mongoose.Schema({
     image: {
         type: String,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+    },
+    friends: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+        },
+    ],
 });
 
 module.exports = mongoose.model("user", userModel);
