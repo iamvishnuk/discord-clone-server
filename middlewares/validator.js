@@ -56,7 +56,7 @@ module.exports = {
     ],
 
     addFriendValidato: [
-        check("to")
+        check("frndUserName")
             .not()
             .isEmpty()
             .withMessage("Please enter a valid user name")
