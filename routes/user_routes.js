@@ -15,6 +15,8 @@ const {
     acceptFriendRequest,
     rejectFriendRequest,
     getAllFriends,
+    getDmUserDetails,
+    addFriendToDirectMessageList,
 } = require("../controllers/friends_controller");
 
 const router = require("express").Router();
@@ -31,5 +33,11 @@ router.delete(
     rejectFriendRequest
 );
 router.get("/get-all-friends", userAuthentication, getAllFriends);
+router.post(
+    "/add-friend-to-dm-list",
+    userAuthentication,
+    addFriendToDirectMessageList
+);
+router.get("/get-dm-userdetails/:userId", userAuthentication, getDmUserDetails);
 
 module.exports = router;

@@ -93,6 +93,10 @@ module.exports = {
                 message: "Logged in successfully",
                 userId,
                 token,
+                displayName: user.displayName,
+                userName: user.userName,
+                image: user.image || "",
+                email: user.email,
             });
         } catch (error) {
             console.log(error.message);

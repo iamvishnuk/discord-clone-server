@@ -35,6 +35,12 @@ const userModel = new mongoose.Schema({
             ref: "user",
         },
     ],
+    directMessage: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+        },
+    ],
 });
 
 module.exports = mongoose.model("user", userModel);

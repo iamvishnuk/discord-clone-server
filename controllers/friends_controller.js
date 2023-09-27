@@ -140,4 +140,52 @@ module.exports = {
             });
         }
     },
+
+    addFriendToDirectMessageList: async (req, res) => {
+        try {
+            const dmUserId = req.body.userId;
+            const userId = req.userId;
+            console.log(dmUserId,req.body)
+
+            const updateUser = await USERS.findByIdAndUpdate(
+                userId,
+                {
+                    $addToSet: { directMessage: dmUserId },
+                },
+                { new: true }
+            );
+            if (!updateUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            console.log(updateUser)
+            res.status(200).json({
+                message: "Succefully add Friend to Direct Message List",
+                directMessage: updateUser.directMessage,
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).json({
+                error: error.message,
+                message: "Internal Server error",
+            });
+        }
+    },
+
+    getDmUserDetails: async (req, res) => {
+        try {
+            const id = req.params.userId;
+            const userdetails = await USERS.findOne({ _id: id });
+            res.status(200).json({
+                displayName: userdetails.displayName,
+                userName: userdetails.userName,
+                image: userdetails.image,
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).json({
+                error: error.message,
+                message: "Internal Server Error",
+            });
+        }
+    },
 };
