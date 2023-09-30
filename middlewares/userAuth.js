@@ -16,7 +16,6 @@ module.exports.userAuthentication = async (req, res, next) => {
                             error: err.message,
                         });
                 } else {
-                    console.log("Authentication done")
                     req.userId = decode.userId;
                     next();
                 }

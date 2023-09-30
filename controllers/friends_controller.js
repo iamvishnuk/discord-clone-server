@@ -3,6 +3,7 @@ const USERS = require("../model/user-model");
 const { validationResult } = require("express-validator");
 
 module.exports = {
+    // for handling adding new frinds
     addFriend: async (req, res) => {
         try {
             const to = req.body.frndUserName;
@@ -43,6 +44,7 @@ module.exports = {
         }
     },
 
+    // getting all pending friend requests
     getPendingRequests: async (req, res) => {
         try {
             const userId = req.userId;
@@ -68,6 +70,7 @@ module.exports = {
         }
     },
 
+    // handling request accept
     acceptFriendRequest: async (req, res) => {
         try {
             const friendId = req.body.friendId;
@@ -96,6 +99,7 @@ module.exports = {
         }
     },
 
+    // hanind the friend request reject
     rejectFriendRequest: async (req, res) => {
         try {
             const requestId = req.params.id;
@@ -119,6 +123,7 @@ module.exports = {
         }
     },
 
+    // for getting the all friends
     getAllFriends: async (req, res) => {
         try {
             const userId = req.userId;
@@ -141,23 +146,28 @@ module.exports = {
         }
     },
 
+    // function for add the friends to the direct message list
     addFriendToDirectMessageList: async (req, res) => {
         try {
             const dmUserId = req.body.userId;
             const userId = req.userId;
-            console.log(dmUserId,req.body)
+            console.log(dmUserId, req.body);
 
+            // this function will populate the direct message list and return only the neccessay fields
             const updateUser = await USERS.findByIdAndUpdate(
                 userId,
                 {
                     $addToSet: { directMessage: dmUserId },
                 },
                 { new: true }
-            );
+            ).populate({
+                path: "directMessage",
+                select: "_id userName displayName image",
+            });
+            console.log(updateUser);
             if (!updateUser) {
                 return res.status(404).json({ message: "User not found" });
             }
-            console.log(updateUser)
             res.status(200).json({
                 message: "Succefully add Friend to Direct Message List",
                 directMessage: updateUser.directMessage,
@@ -171,17 +181,18 @@ module.exports = {
         }
     },
 
-    getDmUserDetails: async (req, res) => {
+    // getting the direct message list
+    getDirectMessageList: async (req, res) => {
         try {
-            const id = req.params.userId;
-            const userdetails = await USERS.findOne({ _id: id });
-            res.status(200).json({
-                displayName: userdetails.displayName,
-                userName: userdetails.userName,
-                image: userdetails.image,
+            const user = await USERS.findById(req.userId).populate({
+                path: "directMessage",
+                select: "_id userName displayName image",
             });
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res.status(200).json({ directMessage: user.directMessage });
         } catch (error) {
-            console.log(error.message);
             res.status(500).json({
                 error: error.message,
                 message: "Internal Server Error",

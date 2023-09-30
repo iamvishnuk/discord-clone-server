@@ -115,7 +115,15 @@ module.exports = {
                     .status(404)
                     .json({ message: "Invalid user", auth: false });
             } else {
-                return res.status(200).json({ auth: true });
+                return res.status(200).json({
+                    auth: true,
+                    message: "Successfully Authenticated",
+                    userId: user._id,
+                    displayName: user.displayName,
+                    userName: user.userName,
+                    image: user.image || "",
+                    email: user.email,
+                });
             }
         } catch (error) {
             res.status(500).json({
