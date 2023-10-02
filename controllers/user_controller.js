@@ -73,7 +73,10 @@ module.exports = {
 
             const { email, password } = req.body;
 
-            const user = await USERS.findOne({ email: email });
+            const user = await USERS.findOne({ email: email }).populate({
+                path: "friends",
+                select: "_id displayName userName createdAt",
+            });
             if (!user)
                 return res.status(404).json({ message: "No user found" });
 
@@ -97,6 +100,7 @@ module.exports = {
                 userName: user.userName,
                 image: user.image || "",
                 email: user.email,
+                friends: user.friends,
             });
         } catch (error) {
             console.log(error.message);
@@ -109,7 +113,10 @@ module.exports = {
 
     isAuthUser: async (req, res) => {
         try {
-            const user = await USERS.findOne({ _id: req.userId });
+            const user = await USERS.findOne({ _id: req.userId }).populate({
+                path: "friends",
+                select: "_id displayName userName createdAt",
+            });
             if (!user) {
                 return res
                     .status(404)
@@ -123,6 +130,7 @@ module.exports = {
                     userName: user.userName,
                     image: user.image || "",
                     email: user.email,
+                    friends: user.friends,
                 });
             }
         } catch (error) {

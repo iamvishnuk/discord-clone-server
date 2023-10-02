@@ -14,7 +14,6 @@ const {
     getPendingRequests,
     acceptFriendRequest,
     rejectFriendRequest,
-    getAllFriends,
     addFriendToDirectMessageList,
     getDirectMessageList,
 } = require("../controllers/friends_controller");
@@ -32,7 +31,6 @@ router.delete(
     userAuthentication,
     rejectFriendRequest
 );
-router.get("/get-all-friends", userAuthentication, getAllFriends);
 router.post(
     "/add-friend-to-dm-list",
     userAuthentication,

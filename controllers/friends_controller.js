@@ -123,29 +123,6 @@ module.exports = {
         }
     },
 
-    // for getting the all friends
-    getAllFriends: async (req, res) => {
-        try {
-            const userId = req.userId;
-            const user = await USERS.findById(userId).populate("friends");
-
-            const friends = user.friends.map((frnd) => ({
-                _id: frnd._id,
-                displayName: frnd.displayName,
-                userName: frnd.userName,
-                createdAt: frnd.createdAt,
-                friends: frnd.friends,
-            }));
-
-            res.status(200).json({ friends });
-        } catch (error) {
-            res.status(500).json({
-                error: error.message,
-                message: "Internal Server Error",
-            });
-        }
-    },
-
     // function for add the friends to the direct message list
     addFriendToDirectMessageList: async (req, res) => {
         try {
