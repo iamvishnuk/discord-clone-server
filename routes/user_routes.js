@@ -7,6 +7,7 @@ const {
     registerationValidator,
     loginValidator,
     addFriendValidato,
+    directChatValidator,
 } = require("../middlewares/validator");
 const { userAuthentication } = require("../middlewares/userAuth");
 const {
@@ -17,6 +18,7 @@ const {
     addFriendToDirectMessageList,
     getDirectMessageList,
 } = require("../controllers/friends_controller");
+const { directChat } = require("../controllers/direct-msg-controller");
 
 const router = require("express").Router();
 
@@ -36,6 +38,12 @@ router.post(
     userAuthentication,
     addFriendToDirectMessageList
 );
-router.get("/get-dm-userlist",userAuthentication, getDirectMessageList)
+router.get("/get-dm-userlist", userAuthentication, getDirectMessageList);
+router.post(
+    "/direct-chat",
+    directChatValidator,
+    userAuthentication,
+    directChat
+);
 
 module.exports = router;

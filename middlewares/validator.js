@@ -65,4 +65,17 @@ module.exports = {
             .isLength({ min: 3 })
             .withMessage("serName contain at least 3 characters"),
     ],
+
+    directChatValidator: [
+        check("to")
+            .not()
+            .isEmpty()
+            .withMessage("receiver user id is not found")
+            .custom((value) => /^[a-zA-Z0-9]+$/.test(value))
+            .withMessage("Invalid receiver user id"),
+        check("message")
+            .not()
+            .isEmpty()
+            .withMessage("message is empty")
+    ],
 };
