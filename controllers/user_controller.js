@@ -8,11 +8,12 @@ module.exports = {
         try {
             const errors = validationResult(req);
 
-            if (!errors.isEmpty())
+            if (!errors.isEmpty()) {
                 return res.status(400).json({
                     errors: errors.array(),
                     message: "Please enter valid credentials",
                 });
+            }
 
             const { email, displayName, userName, phone, password } = req.body;
 
@@ -58,6 +59,7 @@ module.exports = {
                 error: error.message,
                 message: error.message,
             });
+            console.log(error);
         }
     },
 

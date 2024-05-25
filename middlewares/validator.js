@@ -21,7 +21,7 @@ module.exports = {
             .isLength({ min: 3 })
             .withMessage("UserName contain at least 3 characters")
             .custom((value) => !/\s/.test(value))
-            .withMessage("No space are allowed in the password"),
+            .withMessage("No space are allowed in the userName"),
         check("phone")
             .not()
             .isEmpty()
